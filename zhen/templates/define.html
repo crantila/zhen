@@ -1,0 +1,45 @@
+{% extends "search.html" %}
+
+{% block results %}
+<h2>{% block table_title %}Results for &ldquo;{{ searched }}&rdquo;{% endblock %}</h2>
+{% if results|length > 0 %}
+    <table>
+        <thead>
+            <tr>
+                <td>中文</td>
+                <td>{% if chars == 's' %}量词{% else %}量詞{% endif %}</td>
+                <td>English</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% block table_body %}
+                {% for result in results %}
+                    <tr>
+                        <td {% if chars == 's' %}lang="zh_CN"{% else %}lang="zh_TW"{% endif %}>
+                            <a
+                            href="/characters?word={% if chars == 's' %}{{ result['s'] }}&amp;chars=s{% else %}{{ result['t'] }}&amp;chars=t{% endif %}"
+                            title="look up each character in {% if chars == 's' %}{{ result['s'] }}{% else %}{{ result['t'] }}{% endif %}"
+                            >
+                                <ruby>
+                                    {% if chars == 's' %}{{ result['s'] }}{% else %}{{ result['t'] }}{% endif %}
+                                    <rp>(</rp><rt>{{ result['p'] }}</rt><rp>)</rp>
+                                </ruby>
+                            </a>
+                        </td>
+                        <td {% if chars == 's' %}lang="zh_CN"{% else %}lang="zh_TW"{% endif %}>
+                            {% if result['c']|length > 0 %}{{ result['c'] }}{% endif %}
+                        </td>
+                        <td>
+                            {% for english in result['e'] %}
+                                {{ english }},
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+        </tbody>
+    </table>
+{% else %}
+<p>未找到结果 No results found.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "define.html" %}
+
+{% block table_title %}Characters in &ldquo;{{ searched }}&rdquo;{% endblock %}
+
+{% block table_body %}
+    {% for result in results %}
+        <tr>
+            <td {% if chars == 's' %}lang="zh_CN"{% else %}lang="zh_TW"{% endif %}>
+                <ruby>
+                    {% if chars == 's' %}{{ result['s'] }}{% else %}{{ result['t'] }}{% endif %}
+                    <rp>(</rp><rt>{{ result['p'] }}</rt><rp>)</rp>
+                </ruby>
+            </td>
+            <td>
+                {% if result['c']|length > 0 %}
+                    <a href="/define?word={{ result['c'] }}&amp;chars={% if chars == 's' %}s{% else %}t{% endif %}">{{ result['c'] }}</a>
+                {% endif %}
+            </td>
+            <td>
+                {% for english in result['e'] %}
+                    {{ english }},
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}

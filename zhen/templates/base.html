@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Zhen</title>
+    <style>
+        html, body { margin: 0; padding: 0; }
+        body > header {
+            background: rgb(0, 139, 137);
+            color: white;
+            margin: 0;
+            padding: 0.5em 2em;
+        }
+        body > header > * { display: inline; margin: 0; }
+        body > header > h1 { margin-right: 1em; }
+        main { margin: 0 auto; max-width: 960px; padding: 0 1em; }
+        * + * { margin-top: 1.25em; }
+        h1, h2 { font-weight: normal; }
+        td > a { color: rgb(217, 58, 51); text-decoration: none; }
+        td > a:hover { background: rgb(217, 58, 51); color: white; }
+        {#td > a::after { content: '(hanzi)'; }#}
+        ruby { font-size: larger; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Zhen</h1>
+        <p>{% if chars == 's' %}汉语-英语词典{% else %}漢語-英語詞典{% endif %}</p>
+    </header>
+
+    <main>
+        {% block main %}
+            {% block search %}{% endblock %}
+            {% block results %}{% endblock %}
+        {% endblock %}
+    </main>
+</body>
+</html>
+
+
+
+{# green: rgb(0, 139, 137); text is white #}
+{# red: rgb(217, 58, 51); text is white #}
+{# white: actually white; text is rgb(86, 86, 90) #}
