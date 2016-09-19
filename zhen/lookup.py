@@ -23,11 +23,11 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 #--------------------------------------------------------------------------------------------------
 
+import pathlib
 import sqlite3
 
 
-DATABASE_PATH = '../zhen_db.sqlite3'
-
+DATABASE_FILENAME = 'zhen_db.sqlite3'
 _DB = None
 
 
@@ -36,7 +36,11 @@ def load():
     Load the SQLite database.
     """
     global _DB
-    _DB = sqlite3.Connection(DATABASE_PATH)
+
+    db_file = pathlib.Path(__file__).parent.parent.joinpath(DATABASE_FILENAME)
+    if not db_file.exists() or not db_file.is_file():
+        raise SystemExit(32)
+    _DB = sqlite3.Connection(str(db_file))
 
 
 def _format_chinese(cur):
