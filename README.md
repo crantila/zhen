@@ -13,7 +13,26 @@ aren't that good---but the goal is to learn how to build a web app without any f
 while also building something that I want to use.
 
 
-How Start?
-----------
+Setup for Development
+---------------------
 
-You can't yet. I didn't put the dictionary data in the repository, and I'm not sure that I can...
+1. Run the "bootstrap.sh" script from the repository root directory. (That is, the same directory
+   as this `README.md` file).
+1. Make a virtualenv and activate it.
+1. Update pip and setuptools (`pip install -U pip setuptools`).
+1. Install *Zhen* to the virtualenv (`pip install -e .` in this directory).
+
+And run it with `python -m zhen`.
+
+
+Setup for Deployment
+--------------------
+
+Working on it!
+
+
+Attribution
+-----------
+
+This dictionary web app uses the contents of the MDBG dictionary, available under a Creative Commons
+license from http://www.mdbg.net/chindict/chindict.php?page=cc-cedict .
