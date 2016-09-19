@@ -87,3 +87,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# For the MDBG database
+cedict_1_0_ts_utf-8_mdbg.*
+mdbg*
+*.sqlite3
