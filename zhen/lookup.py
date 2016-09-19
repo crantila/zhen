@@ -23,56 +23,138 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 #--------------------------------------------------------------------------------------------------
 
-import json
+import sqlite3
 
-OUTPUT_FILE = 'output.json'
 
-_words = []
+DATABASE_PATH = '../zhen_db.sqlite3'
+
+_DB = None
 
 
 def load():
-    global _words
-    with open(OUTPUT_FILE) as outfile:
-        _words = json.load(outfile)
+    """
+    Load the SQLite database.
+    """
+    global _DB
+    _DB = sqlite3.Connection(DATABASE_PATH)
 
-def find_in_field(word, field):
+
+def _format_chinese(cur):
+    """
+    Format the result of database query on the "chinese" table.
+
+    :param cur: A :class:`sqlite3.Cursor` that just ran a query.
+    :param str word: The word to look up.
+    :returns: A list of definition dictionaries.
+    :rtype: list of dict
+
+    Formatting is done by first cross-referencing the English definitions, then by filling in all
+    the fields to a dictionary with the following keys:
+
+    - c: classifier
+    - s: simplified Chinese
+    - t: traditional Chinese
+    - p: pinyin
+    - e: English
+    """
     post = []
+    for chinese in cur.fetchall():
+        english = []
+        for x_eng in chinese[4].split(','):
+            for eng in _DB.execute('SELECT word FROM english WHERE id=?', (x_eng,)).fetchall():
+                english.append(eng[0])
 
-    if field == 'e':
-        for each_word in _words:
-            for each_english in each_word['e']:
-                if each_english == word:
-                    post.append(each_word)
-
-    else:
-        for each_word in _words:
-            if each_word[field] == word:
-                post.append(each_word)
+        post.append({
+            'c': chinese[0],
+            's': chinese[1],
+            't': chinese[2],
+            'p': chinese[3],
+            'e': english,
+        })
 
     return post
 
+
 def find_simplified(word):
-    return find_in_field(word, 's')
+    """
+    Find a word by simplified characters.
+
+    :param str word: The word to look up.
+    :returns: A list of definition dictionaries.
+    :rtype: list of dict
+    """
+    cur = _DB.execute(
+        'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE simplified=?',
+        (word,))
+
+    return _format_chinese(cur)
+
 
 def find_traditional(word):
-    return find_in_field(word, 't')
+    """
+    Find a word by traditional characters.
+
+    :param str word: The word to look up.
+    :returns: A list of definition dictionaries.
+    :rtype: list of dict
+    """
+    cur = _DB.execute(
+        'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE traditional=?',
+        (word,))
+
+    return _format_chinese(cur)
+
 
 def find_pinyin(word):
-    return find_in_field(word, 'p')
+    """
+    Find a word by pinyin.
+
+    :param str word: The word to look up.
+    :returns: A list of definition dictionaries.
+    :rtype: list of dict
+    """
+    cur = _DB.execute(
+        'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE pinyin=?',
+        (word,))
+
+    return _format_chinese(cur)
+
 
 def find_english(word):
-    return find_in_field(word, 'e')
+    """
+    Find an English word.
+
+    :param str word: The word to look up.
+    :returns: A list of definition dictionaries.
+    :rtype: list of dict
+    """
+    cur = _DB.execute(
+        'SELECT x_chinese FROM english WHERE word=?',
+        (word,))
+
+    post = []
+    for x_chin in cur.fetchall():
+        for chin_id in x_chin[0].split(','):
+            post.extend(_format_chinese(_DB.execute(
+                'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE id=?',
+                (chin_id,))))
+
+    return post
 
 
-def find_chinese(word):
+def find_chinese(characters):
     """
-    Only search for a word in traditional or simplified characters.
+    Find a word in Chinese characters only.
+
+    :param str word: The word to look up.
+    :returns: A list of definition dictionaries.
+    :rtype: list of dict
     """
-    post = find_simplified(word)
+    post = find_simplified(characters)
     if post:
         return post
 
-    post = find_traditional(word)
+    post = find_traditional(characters)
     if post:
         return post
 
@@ -80,6 +162,20 @@ def find_chinese(word):
 
 
 def find(word):
+    """
+    Try to find a word at any cost.
+
+    :param str word: The word to look up.
+    :returns: A list of definition dictionaries.
+    :rtype: list of dict
+
+    The search order is:
+
+    - simplified
+    - traditional
+    - English
+    - pinyin
+    """
     post = find_simplified(word)
     if post:
         return post
@@ -88,11 +184,11 @@ def find(word):
     if post:
         return post
 
-    post = find_pinyin(word)
+    post = find_english(word)
     if post:
         return post
 
-    post = find_english(word)
+    post = find_pinyin(word)
     if post:
         return post
 
