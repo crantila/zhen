@@ -28,10 +28,7 @@ Load the MDBG dictionary export into a SQLite3 database.
 
 import pathlib
 import sqlite3
-
-
-FILE = '../cedict_1_0_ts_utf-8_mdbg.2016-09-11'
-DATABASE_PATH = '../zhen_db.sqlite3'
+import sys
 
 
 english_db = {'highest_id': 0}
@@ -39,17 +36,17 @@ english_db = {'highest_id': 0}
 # the English term and a list of xref IDs for the corresponding Chinese words, respectively.
 
 
-def init_db():
+def init_db(database_path):
     """
     Create a new dictionary database. If the database file exists, delete it first.
     """
     # delete existing database
-    db_path = pathlib.Path(DATABASE_PATH)
+    db_path = pathlib.Path(database_path)
     if db_path.exists():
         db_path.unlink()
 
     # make new database
-    conn = sqlite3.Connection(DATABASE_PATH)
+    conn = sqlite3.Connection(database_path)
     cur = conn.cursor()
     cur.execute('''CREATE TABLE english (
         id INTEGER PRIMARY KEY,
@@ -134,9 +131,20 @@ def add_the_english(cur):
 
 
 def main():
-    conn = init_db()
+    if (sys.argv[0].endswith('.py') and len(sys.argv) < 3) or len(sys.argv) < 2:
+        print('Usage: mdbg_to_sqlite.py MDBG_EXPORT_FILE DATABASE_PATH')
+        raise SystemExit(1)
+
+    if sys.argv[0].endswith('.py'):
+        export_file = sys.argv[1]
+        database_path = sys.argv[2]
+    else:
+        export_file = sys.argv[0]
+        database_path = sys.argv[1]
+
+    conn = init_db(database_path)
     with conn:
-        with open(FILE) as source:
+        with open(export_file) as source:
             cur = conn.cursor()
             for i, each in enumerate(source):
                 if each.startswith('#'):
