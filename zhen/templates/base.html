@@ -1,10 +1,16 @@
+{% filter remove_spaces %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Zhen</title>
     <style>
-        html, body { color: #555; font-family: 'Noto Sans', sans;margin: 0; padding: 0; }
+        html, body {
+            color: #555;
+            font-family: 'Noto Sans', sans;
+            margin: 0;
+            padding: 0;
+        }
         body > header {
             background: rgb(0,139,137);
             color: white;
@@ -19,13 +25,14 @@
         {#
             results table
         #}
-        table { border-collapse: collapse; }
+        table { border-collapse: collapse; margin: 0 0 1.5em 0; }
         th { border-bottom: 1px solid #CCC; }
         tr + tr > td { border-top: 1px solid #CCC; }
         td { padding: .25em 1.5em; }
         td > a { color: #555; text-decoration: none; border-bottom: 1px dotted #555; }
         td > a:hover { border-bottom: 1px solid rgb(217,58,51); color: rgb(217,58,51); }
         ruby { font-size: larger; }
+        rt { margin-top: 1em; }
     </style>
 </head>
 
@@ -43,6 +50,7 @@
     </main>
 </body>
 </html>
+{% endfilter %}
 {#
     STYLE NOTES
     ===========

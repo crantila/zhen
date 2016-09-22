@@ -42,6 +42,27 @@ JINJA = Environment(  # TODO: make it SandboxedEnvironment?
 )
 
 
+def remove_spaces(spaced):
+    """
+    Filter unnecessary spaces from a rendered template.
+
+    This is intended to run as a filter on a complete template. It removes:
+
+    - blank lines
+    - whitespace at the start of a line
+    - whitespace at the end of a line
+    """
+    post = []
+    for each_line in spaced.split('\n'):
+        stripped = each_line.strip()
+        if stripped:
+            post.append(stripped)
+
+    return '\n'.join(post)
+
+JINJA.filters['remove_spaces'] = remove_spaces
+
+
 def _verify_chars(chars):
     """
     Verify the "chars" query argument. If the parameter to this function is either `'s'` or `'t'`,

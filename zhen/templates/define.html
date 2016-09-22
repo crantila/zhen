@@ -21,17 +21,23 @@
                             title="look up each character in {% if chars == 's' %}{{ result['s'] }}{% else %}{{ result['t'] }}{% endif %}"
                             >
                                 <ruby>
-                                    {% if chars == 's' %}{{ result['s'] }}{% else %}{{ result['t'] }}{% endif %}
+                                    {% if chars == 's' %}
+                                        {{ result['s'] }}
+                                    {% else %}
+                                        {{ result['t'] }}
+                                    {% endif %}
                                     <rp>(</rp><rt>{{ result['p'] }}</rt><rp>)</rp>
                                 </ruby>
                             </a>
                         </td>
                         <td {% if chars == 's' %}lang="zh_CN"{% else %}lang="zh_TW"{% endif %}>
-                            {% if result['c']|length > 0 %}{{ result['c'] }}{% endif %}
+                            {% if result['c']|length > 0 %}
+                                {{ result['c'] }}
+                            {% endif %}
                         </td>
                         <td>
                             {% for english in result['e'] %}
-                                {{ english }},
+                                {{ english }},{{ " " }}
                             {% endfor %}
                         </td>
                     </tr>
