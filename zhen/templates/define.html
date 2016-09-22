@@ -1,14 +1,14 @@
 {% extends "search.html" %}
 
 {% block results %}
-<h2>{% block table_title %}Results for &ldquo;{{ searched }}&rdquo;{% endblock %}</h2>
+<h2>{% block table_title %}&ldquo;{{ searched }}&rdquo;{% endblock %}</h2>
 {% if results|length > 0 %}
     <table>
         <thead>
             <tr>
-                <td>中文</td>
-                <td>{% if chars == 's' %}量词{% else %}量詞{% endif %}</td>
-                <td>English</td>
+                <th>中文</th>
+                <th>{% if chars == 's' %}量词{% else %}量詞{% endif %}</th>
+                <th>English</th>
             </tr>
         </thead>
         <tbody>

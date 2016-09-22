@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Zhen</title>
     <style>
-        html, body { margin: 0; padding: 0; }
+        html, body { color: #555; font-family: 'Noto Sans', sans;margin: 0; padding: 0; }
         body > header {
-            background: rgb(0, 139, 137);
+            background: rgb(0,139,137);
             color: white;
             margin: 0;
             padding: 0.5em 2em;
@@ -16,9 +16,15 @@
         main { margin: 0 auto; max-width: 960px; padding: 0 1em; }
         * + * { margin-top: 1.25em; }
         h1, h2 { font-weight: normal; }
-        td > a { color: rgb(217, 58, 51); text-decoration: none; }
-        td > a:hover { background: rgb(217, 58, 51); color: white; }
-        {#td > a::after { content: '(hanzi)'; }#}
+        {#
+            results table
+        #}
+        table { border-collapse: collapse; }
+        th { border-bottom: 1px solid #CCC; }
+        tr + tr > td { border-top: 1px solid #CCC; }
+        td { padding: .25em 1.5em; }
+        td > a { color: #555; text-decoration: none; border-bottom: 1px dotted #555; }
+        td > a:hover { border-bottom: 1px solid rgb(217,58,51); color: rgb(217,58,51); }
         ruby { font-size: larger; }
     </style>
 </head>
@@ -37,9 +43,12 @@
     </main>
 </body>
 </html>
+{#
+    STYLE NOTES
+    ===========
 
+    green: rgb(0, 139, 137); text is white
+    red: rgb(217, 58, 51); text is white
+    white: actually white; text is rgb(86, 86, 90) BUT I'm using #555
 
-
-{# green: rgb(0, 139, 137); text is white #}
-{# red: rgb(217, 58, 51); text is white #}
-{# white: actually white; text is rgb(86, 86, 90) #}
+#}
