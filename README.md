@@ -1,7 +1,7 @@
 Zhen
 ====
 
-汉语-英语词典 Chinese-English Dictionary
+汉英词典 Chinese-English Dictionary
 
 
 What?
