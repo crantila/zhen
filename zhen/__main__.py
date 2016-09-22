@@ -23,21 +23,26 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 #--------------------------------------------------------------------------------------------------
 
-# TODO: choose simp/trad for classifiers
-# TODO: remove the comma at the end of every English definition list
-
 from jinja2 import Environment, PackageLoader
 from tornado import ioloop, gen, template, web
 
 from zhen import lookup
 
 
+if __debug__:
+    jinja_auto_reload = True
+    jinja_optimized = False
+else:
+    jinja_auto_reload = False
+    jinja_optimized = True
+
+
 JINJA = Environment(  # TODO: make it SandboxedEnvironment?
     autoescape=True,  # TODO: change this to the "Autoescape Extension"
-    auto_reload=True,  # DEBUG: only for debugging
+    auto_reload=jinja_auto_reload,
     loader=PackageLoader('zhen', 'templates'),
-    lstrip_blocks=True,  # TODO: this doesn't seem to work
-    optimized=False,  # DEBUG: only for debugging
+    lstrip_blocks=True,
+    optimized=jinja_optimized,
     trim_blocks=True,
 )
 
