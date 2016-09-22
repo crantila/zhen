@@ -22,117 +22,18 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 #--------------------------------------------------------------------------------------------------
+"""
+Run Zhen as a native Tornado application.
+"""
 
-from jinja2 import Environment, PackageLoader
-from tornado import ioloop, gen, template, web
+from tornado import ioloop, web
 
-from zhen import lookup
-
-
-if __debug__:
-    jinja_auto_reload = True
-    jinja_optimized = False
-else:
-    jinja_auto_reload = False
-    jinja_optimized = True
-
-
-JINJA = Environment(  # TODO: make it SandboxedEnvironment?
-    autoescape=True,  # TODO: change this to the "Autoescape Extension"
-    auto_reload=jinja_auto_reload,
-    loader=PackageLoader('zhen', 'templates'),
-    lstrip_blocks=True,
-    optimized=jinja_optimized,
-    trim_blocks=True,
-)
-
-
-def remove_spaces(spaced):
-    """
-    Filter unnecessary spaces from a rendered template.
-
-    This is intended to run as a filter on a complete template. It removes:
-
-    - blank lines
-    - whitespace at the start of a line
-    - whitespace at the end of a line
-    """
-    post = []
-    for each_line in spaced.split('\n'):
-        stripped = each_line.strip()
-        if stripped:
-            post.append(stripped)
-
-    return '\n'.join(post)
-
-JINJA.filters['remove_spaces'] = remove_spaces
-
-
-def _verify_chars(chars):
-    """
-    Verify the "chars" query argument. If the parameter to this function is either `'s'` or `'t'`,
-    it is returned; otherwise the default `'s'` is returned.
-    """
-    if chars == 't':
-        return chars
-    else:
-        return 's'
-
-
-class MainHandler(web.RequestHandler):
-    @gen.coroutine
-    def get(self):
-        chars = _verify_chars(self.get_argument('chars', 's'))
-        self.write(JINJA.get_template('search.html').render(chars=chars))
-
-
-class DefinitionHandler(web.RequestHandler):
-    @gen.coroutine
-    def get(self):
-        self.post()
-
-    @gen.coroutine
-    def post(self):
-        word = self.get_argument('word')  # TODO: filter the word for safety
-        chars = _verify_chars(self.get_argument('chars', 's'))
-        results = lookup.find(word)
-        self.write(JINJA.get_template('define.html').render(
-            chars=chars,
-            results=results,
-            searched=word,
-        ))
-
-
-class CharactersHandler(web.RequestHandler):
-    @gen.coroutine
-    def get(self):
-        self.post()
-
-    @gen.coroutine
-    def post(self):
-        word = self.get_argument('word')  # TODO: filter the word for safety
-        chars = _verify_chars(self.get_argument('chars', 's'))
-        results = []
-        for each_char in word:
-            results.extend(lookup.find_chinese(each_char))
-        self.write(JINJA.get_template('characters.html').render(
-            chars=chars,
-            results=results,
-            searched=word,
-        ))
-
-
-def make_app():
-    return web.Application([
-        (r'/', MainHandler),
-        (r'/characters', CharactersHandler),
-        (r'/define', DefinitionHandler),],
-        debug=True)
+from zhen import handlers, lookup
 
 
 if __name__ == '__main__':
     lookup.load()
-    app = make_app()
+    app = web.Application(handlers.HANDLER_DEFINITIONS, debug=__debug__)
     app.listen(8000)
     print('Go!')
     ioloop.IOLoop.current().start()
