@@ -23,6 +23,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 #--------------------------------------------------------------------------------------------------
 
+import os
 import pathlib
 import sqlite3
 
@@ -37,9 +38,14 @@ def load():
     """
     global _DB
 
-    db_file = pathlib.Path(__file__).parent.parent.joinpath(DATABASE_FILENAME)
+    if 'OPENSHIFT_DATA_DIR' in os.environ:
+        db_file = pathlib.Path(os.environ['OPENSHIFT_DATA_DIR']).joinpath(DATABASE_FILENAME)
+    else:
+        db_file = pathlib.Path(__file__).parent.parent.joinpath(DATABASE_FILENAME)
+
     if not db_file.exists() or not db_file.is_file():
         raise SystemExit(32)
+
     _DB = sqlite3.Connection(str(db_file))
 
 
