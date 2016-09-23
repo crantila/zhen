@@ -34,7 +34,7 @@ setup(
     version = '0.0.1',
     packages = ['zhen'],
 
-    install_requires = ['tornado<5', 'Jinja2<3'],
+    install_requires = ['tornado==4.3', 'Jinja2<3'],
     tests_require = ['pytest<3'],
 
     author = 'Christopher Antila',
