@@ -144,7 +144,7 @@ def main():
 
     conn = init_db(database_path)
     with conn:
-        with open(export_file) as source:
+        with open(export_file, encoding='utf-8') as source:
             cur = conn.cursor()
             for i, each in enumerate(source):
                 if each.startswith('#'):

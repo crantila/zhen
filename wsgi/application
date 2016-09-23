@@ -17,7 +17,7 @@ if 'OPENSHIFT_REPO_DIR' in os.environ:
          pass
 
 import tornado.wsgi
-from zhen import handlers
+from zhen import handlers, lookup
 
 if 'OPENSHIFT_REPO_DIR' in os.environ:
      settings = {
@@ -30,4 +30,5 @@ else:
           'template_path' : os.path.join(os.getcwd(), 'wsgi/templates'),
      }
 
+lookup.load()
 application = tornado.wsgi.WSGIApplication(handlers.HANDLER_DEFINITIONS, **settings)
