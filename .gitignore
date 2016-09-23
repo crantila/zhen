@@ -92,3 +92,4 @@ ENV/
 cedict_1_0_ts_utf-8_mdbg.*
 mdbg*
 *.sqlite3
+!scripts/mdbg_to_sqlite.py

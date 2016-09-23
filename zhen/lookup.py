@@ -24,7 +24,7 @@
 #--------------------------------------------------------------------------------------------------
 
 import os
-import pathlib
+import os.path
 import sqlite3
 
 
@@ -39,11 +39,12 @@ def load():
     global _DB
 
     if 'OPENSHIFT_DATA_DIR' in os.environ:
-        db_file = pathlib.Path(os.environ['OPENSHIFT_DATA_DIR']).joinpath(DATABASE_FILENAME)
+        db_file = os.path.join(os.environ['OPENSHIFT_DATA_DIR'], DATABASE_FILENAME)
     else:
-        db_file = pathlib.Path(__file__).parent.parent.joinpath(DATABASE_FILENAME)
+        # db_file = pathlib.Path(__file__).parent.parent.joinpath(DATABASE_FILENAME)
+        db_file = os.path.join(os.path.split(os.path.split(__file__)[0])[0], DATABASE_FILENAME)
 
-    if not db_file.exists() or not db_file.is_file():
+    if not os.path.exists(db_file) or not os.path.isfile(db_file):
         raise SystemExit(32)
 
     _DB = sqlite3.Connection(str(db_file))

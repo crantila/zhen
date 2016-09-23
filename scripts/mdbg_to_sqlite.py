@@ -26,7 +26,8 @@
 Load the MDBG dictionary export into a SQLite3 database.
 """
 
-import pathlib
+import os
+import os.path
 import sqlite3
 import sys
 
@@ -41,9 +42,8 @@ def init_db(database_path):
     Create a new dictionary database. If the database file exists, delete it first.
     """
     # delete existing database
-    db_path = pathlib.Path(database_path)
-    if db_path.exists():
-        db_path.unlink()
+    if os.path.exists(database_path):
+        os.unlink(database_path)
 
     # make new database
     conn = sqlite3.Connection(database_path)
