@@ -74,6 +74,39 @@ else:
     JINJA.filters['remove_spaces'] = remove_spaces
 
 
+def request_wrapper(func):
+    """
+    Use this function as a decorator on a handler to prevent mysterious failures when an exception
+    happens. This function calls :meth:`send_error`. If ```__debug__`` is ``True``, a traceback
+    will be emitted with :func:`print`.
+
+    .. note:: That the method being decorated is assumed to be a Tornado coroutine. You must put
+        the ``@request_wrapper`` decorator *above* the coroutine decorator, like this:
+
+        @request_wrapper
+        @coroutine
+        def get(self):
+            pass
+    """
+
+    @gen.coroutine
+    def decorated(self, *args, **kwargs):
+        """Wraps."""
+        try:
+            yield func(self, *args, **kwargs)
+        except (gen.BadYieldError, Exception) as exc:   # pylint: disable=broad-except
+            if __debug__:
+                if isinstance(exc, gen.BadYieldError):
+                    print('IMPORTANT: write the @request_wrapper decorator above @gen.coroutine')
+                else:
+                    import traceback
+                    traceback.print_exception(type(exc), exc, exc.__traceback__)
+
+            self.send_error(500, reason='Programmer Error')
+
+    return decorated
+
+
 def _verify_chars(chars):
     """
     Verify the "chars" query argument. If the parameter to this function is either `'s'` or `'t'`,
@@ -86,6 +119,7 @@ def _verify_chars(chars):
 
 
 class MainHandler(web.RequestHandler):
+    @request_wrapper
     @gen.coroutine
     def get(self):
         chars = _verify_chars(self.get_argument('chars', 's'))
@@ -93,10 +127,12 @@ class MainHandler(web.RequestHandler):
 
 
 class DefinitionHandler(web.RequestHandler):
+    @request_wrapper
     @gen.coroutine
     def get(self):
         self.post()
 
+    @request_wrapper
     @gen.coroutine
     def post(self):
         word = self.get_argument('word')  # TODO: filter the word for safety
@@ -110,10 +146,12 @@ class DefinitionHandler(web.RequestHandler):
 
 
 class CharactersHandler(web.RequestHandler):
+    @request_wrapper
     @gen.coroutine
     def get(self):
         self.post()
 
+    @request_wrapper
     @gen.coroutine
     def post(self):
         word = self.get_argument('word')  # TODO: filter the word for safety
