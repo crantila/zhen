@@ -26,14 +26,18 @@
 Run Zhen as a native Tornado application.
 """
 
+import os.path
 from tornado import ioloop, web
-
 from zhen import handlers, lookup
 
 
 if __name__ == '__main__':
     lookup.load()
-    app = web.Application(handlers.HANDLER_DEFINITIONS, debug=__debug__)
+    app = web.Application(
+        debug=__debug__,
+        handlers=handlers.HANDLER_DEFINITIONS,
+        static_path=os.path.join(os.path.split(os.path.split(__file__)[0])[0], 'static'),
+    )
     app.listen(8000)
     print('Zhen is ready!')
     if __debug__:
