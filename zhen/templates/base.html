@@ -7,6 +7,7 @@
     <link href="/static/img/favicon_16px.png" rel="icon">
     <title>Zhen</title>
     <style>
+        h1 > a { color: inherit; text-decoration: none; }
         html, body {
             color: #555;
             font-family: 'Noto Sans', sans;
@@ -40,7 +41,7 @@
 
 <body>
     <header>
-        <h1>Zhen</h1>
+        <h1><a href="/">Zhen</a></h1>
         <p>{% if chars == 's' %}汉英词典{% else %}漢英詞典{% endif %}</p>
     </header>
 
