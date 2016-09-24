@@ -46,3 +46,11 @@ Attribution
 
 This dictionary web app uses the contents of the MDBG dictionary, available under a Creative Commons
 license from http://www.mdbg.net/chindict/chindict.php?page=cc-cedict .
+
+
+Design Decisions
+----------------
+
+Why load a webfont? Some users or devices may not have a font that can display Chinese characters,
+so I thought it would be important to include one. Obviously it would be too big to load by default,
+so it's "lazy loaded" only if the user has JavaScript enabled.
