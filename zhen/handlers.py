@@ -68,7 +68,10 @@ def remove_spaces(spaced):
 
     return '\n'.join(post)
 
-JINJA.filters['remove_spaces'] = remove_spaces
+if __debug__:
+    JINJA.filters['remove_spaces'] = lambda x: x
+else:
+    JINJA.filters['remove_spaces'] = remove_spaces
 
 
 def _verify_chars(chars):
