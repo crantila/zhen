@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="zhen_logo.svg"
+   inkscape:export-filename="/home/crantila/Documents/programs/zhen/static/img/favicon_512px.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.2993384"
+     inkscape:cx="222.26328"
+     inkscape:cy="246.99658"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1014"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(1.7771702,-486.33347)">
+    <rect
+       style="fill:#008b89;fill-opacity:1;stroke:none"
+       id="rect2985"
+       width="512"
+       height="512"
+       x="-1.7771702"
+       y="486.33347" />
+    <g
+       style="font-size:346.05264282px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Fira Sans;-inkscape-font-specification:Fira Sans"
+       id="text3774">
+      <path
+         d="m 179.68722,691.10766 0,-94.81842 102.77763,0 0,94.81842 -102.77763,0 m -126.309218,0 0,-94.81842 102.431578,0 0,94.81842 -102.431578,0 m 126.309218,-117.31184 0,-61.94342 -23.87764,0 0,61.94342 -125.271053,0 0,161.95264 22.839475,0 0,-21.80132 102.431578,0 0,112.81316 23.87764,0 0,-112.81316 102.77763,0 0,20.07105 23.53158,0 0,-160.22237 -126.30921,0"
+         style="fill:#ffffff;font-family:Noto Sans CJK SC;-inkscape-font-specification:Noto Sans CJK SC"
+         id="path2994" />
+    </g>
+    <g
+       style="font-size:234.54655457px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Noto Sans CJK SC;-inkscape-font-specification:Noto Sans CJK SC"
+       id="text3778">
+      <path
+         d="m 241.27717,964.56726 100.38593,0 0,-16.41826 -80.91856,0 0,-65.90758 65.90758,0 0,-16.41826 -65.90758,0 0,-56.52572 78.33855,0 0,-16.41826 -97.80592,0 0,171.68808"
+         style="fill:#ffffff;font-family:Noto Sans CJK SC;-inkscape-font-specification:Noto Sans CJK SC"
+         id="path2997" />
+      <path
+         d="m 376.60687,964.56726 18.99827,0 0,-92.64589 c 13.1346,-13.60368 22.75103,-20.6401 36.12017,-20.6401 17.59098,0 25.09649,10.78917 25.09649,35.18199 l 0,78.104 19.23281,0 0,-80.44947 c 0,-32.36739 -12.19644,-49.48932 -38.70018,-49.48932 -17.35643,0 -30.49106,9.85097 -42.68747,21.81283 l -0.70364,0 -1.87637,-18.52918 -15.48008,0 0,126.65514"
+         style="fill:#ffffff;font-family:Noto Sans CJK SC;-inkscape-font-specification:Noto Sans CJK SC"
+         id="path2999" />
+    </g>
+  </g>
+</svg>
