@@ -36,9 +36,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            {% for english in result['e'] %}
-                                {{ english }},{{ " " }}
-                            {% endfor %}
+                            {{ result['e'] | join(', ') }}
                         </td>
                     </tr>
                 {% endfor %}
