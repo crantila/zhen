@@ -35,5 +35,11 @@ if __name__ == '__main__':
     lookup.load()
     app = web.Application(handlers.HANDLER_DEFINITIONS, debug=__debug__)
     app.listen(8000)
-    print('Go!')
-    ioloop.IOLoop.current().start()
+    print('Zhen is ready!')
+    if __debug__:
+        print('DEBUG mode')
+
+    try:
+        ioloop.IOLoop.current().start()
+    except KeyboardInterrupt:
+        print('\nZhen is shutting down')
