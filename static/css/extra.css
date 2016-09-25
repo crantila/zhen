@@ -1,2 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans);
 @import url(https://fonts.googleapis.com/earlyaccess/notosanssc.css);
+
+@media screen and (max-width: 500px) {
+    table, tbody { display: block; width: 100%; }
+    thead { display: none; }
+    tr, td { display: block; padding: 0; }
+    tr + tr > td { border: none; }
+    tr + tr { border-top: 1px solid #CCC; }
+    td:first-child { font-size: 1.2em; }
+}
