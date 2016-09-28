@@ -51,6 +51,7 @@ def init_db(database_path):
     cur.execute('''CREATE TABLE english (
         id INTEGER PRIMARY KEY,
         word TEXT,
+        word_lowercase TEXT,
         x_chinese TEXT);''')
     cur.execute('''CREATE TABLE chinese (
         id INTEGER PRIMARY KEY,
@@ -102,7 +103,7 @@ def extractor(i, word, cur):
     # simplified
     post['s'] = word[first_space_i+1 : word.find(' ', first_space_i+1)]
     # pinyin
-    post['p'] = word[word.find('[')+1 : word.find(']')]
+    post['p'] = word[word.find('[')+1 : word.find(']')].lower()
     # english/classifier
     definitions = word[word.find('/')+1:].split('/')[:-1]
     for definition in definitions:
@@ -126,8 +127,8 @@ def add_the_english(cur):
         if word == 'highest_id':
             continue
         cur.execute(
-            'INSERT INTO english (id, word, x_chinese) VALUES (?,?,?)',
-            (val['id'], word, ','.join(val['xref'])))
+            'INSERT INTO english (id, word, word_lowercase, x_chinese) VALUES (?,?,?,?)',
+            (val['id'], word, word.lower(), ','.join(val['xref'])))
 
 
 def main():

@@ -1,6 +1,5 @@
 - search improvements
     - make it search for substrings (e.g., searching for "find" should also bring results for "to find")
-    - make it case insensitive
 - split classifiers by traditional/simplified and handle accordingly
 - deduplicate the "define" and "characters" templates
 - make sure classifier search links show up on both "define" and "characters" templates

@@ -124,6 +124,8 @@ def find_pinyin(word):
     :returns: A list of definition dictionaries.
     :rtype: list of dict
     """
+    word = word.lower()
+
     cur = _DB.execute(
         'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE pinyin=?',
         (word,))
@@ -139,8 +141,10 @@ def find_english(word):
     :returns: A list of definition dictionaries.
     :rtype: list of dict
     """
+    word = word.lower()
+
     cur = _DB.execute(
-        'SELECT x_chinese FROM english WHERE word=?',
+        'SELECT x_chinese FROM english WHERE word_lowercase=?',
         (word,))
 
     post = []
