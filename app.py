@@ -24,15 +24,9 @@ import tornado.web
 from zhen import handlers, lookup
 
 if 'OPENSHIFT_REPO_DIR' in os.environ:
-    settings = {
-    'static_path' : os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'static'),
-    'template_path' : os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'templates'),
-}
+    settings = {'static_path' : os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'static')}
 else:
-    settings = {
-    'static_path' : os.path.join(os.getcwd(), 'static'),
-    'template_path' : os.path.join(os.getcwd(), 'templates'),
-}
+    settings = {'static_path' : os.path.join(os.getcwd(), 'static')}
 
 port = int(os.environ.get('OPENSHIFT_PYTHON_PORT', '8000'))
 ip = os.environ.get('OPENSHIFT_PYTHON_IP', 'localhost')
@@ -45,6 +39,6 @@ from zhen import handlers, lookup
 if __name__ == '__main__':
     print('Starting up from app.py!')
     lookup.load()
-    app = web.Application(handlers.HANDLER_DEFINITIONS, debug=False)
+    app = web.Application(handlers.HANDLER_DEFINITIONS, debug=False, **settings)
     app.listen(port, ip)
     ioloop.IOLoop.current().start()
