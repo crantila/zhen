@@ -51,15 +51,21 @@ def init_db(database_path):
     cur.execute('''CREATE TABLE english (
         id INTEGER PRIMARY KEY,
         word TEXT,
-        word_lowercase TEXT,
-        x_chinese TEXT);''')
+        word_lowercase TEXT
+        );''')
     cur.execute('''CREATE TABLE chinese (
         id INTEGER PRIMARY KEY,
         classifier TEXT,
         simplified TEXT,
         traditional TEXT,
-        pinyin TEXT,
-        x_english TEXT);''')
+        pinyin TEXT
+        );''')
+    cur.execute('''CREATE TABLE definitions (
+        english_id INTEGER,
+        chinese_id INTEGER,
+        FOREIGN KEY(english_id) REFERENCES english(id),
+        FOREIGN KEY(chinese_id) REFERENCES chinese(id)
+        );''')
     conn.commit()
 
     return conn
@@ -115,8 +121,8 @@ def extractor(i, word, cur):
             post['e'].append(english_maker(i, definition))
 
     cur.execute(
-        'INSERT INTO chinese (id, classifier, simplified, traditional, pinyin, x_english) VALUES (?,?,?,?,?,?)',
-        (i, post['c'], post['s'], post['t'], post['p'], ','.join(post['e'])))
+        'INSERT INTO chinese (id, classifier, simplified, traditional, pinyin) VALUES (?,?,?,?,?)',
+        (i, post['c'], post['s'], post['t'], post['p']))
 
 
 def add_the_english(cur):
@@ -127,8 +133,11 @@ def add_the_english(cur):
         if word == 'highest_id':
             continue
         cur.execute(
-            'INSERT INTO english (id, word, word_lowercase, x_chinese) VALUES (?,?,?,?)',
-            (val['id'], word, word.lower(), ','.join(val['xref'])))
+            'INSERT INTO english (id, word, word_lowercase) VALUES (?,?,?)',
+            (val['id'], word, word.lower()))
+        cur.executemany(
+            'INSERT INTO definitions (english_id, chinese_id) VALUES (?,?)',
+            [(val['id'], zh_id) for zh_id in val['xref']])
 
 
 def main():

@@ -1,11 +1,19 @@
 - search improvements
-    - make it search for substrings (e.g., searching for "find" should also bring results for "to find")
+    - implement full-text searching (see below)
+    - adjust the SQL queries to use JOINs so that you can have only one query
 - split classifiers by traditional/simplified and handle accordingly
 - deduplicate the "define" and "characters" templates
 - make sure classifier search links show up on both "define" and "characters" templates
 - do some sort of input validation on the word being looked up
-- adjust SQL query for English so you only have to run one query
-- see if there's a way to make a one-to-many FOREIGN KEY
 - use progressive enhancement to load results with AJAX when possible
 - add a ServiceWorker to cache the app shell for offline
 - amend the ServiceWorker to cache dictionary results too
+
+
+NOTES for full-text search:
+- refer to https://sqlite.org/fts3.html
+- must use FTS3 because OpenShift
+- remove the "word_lowercase" field from the "english" table
+- should run the "optimize" command after INSERTing everything
+   INSERT INTO xyz(xyz) VALUES('optimize');
+- should restructure the tables for many-to-many before doing the FTS

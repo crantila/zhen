@@ -59,6 +59,14 @@ def _format_chinese(cur):
     :returns: A list of definition dictionaries.
     :rtype: list of dict
 
+    In the cursor results, we assume the following fields:
+
+    - 0: id
+    - 1: classifier
+    - 2: simplified
+    - 3: traditional
+    - 4: pinyin
+
     Formatting is done by first cross-referencing the English definitions, then by filling in all
     the fields to a dictionary with the following keys:
 
@@ -69,17 +77,19 @@ def _format_chinese(cur):
     - e: English
     """
     post = []
-    for chinese in cur.fetchall():
-        english = []
-        for x_eng in chinese[4].split(','):
-            for eng in _DB.execute('SELECT word FROM english WHERE id=?', (x_eng,)).fetchall():
-                english.append(eng[0])
+    for chinese in cur:
+        subcur = _DB.execute('''
+            SELECT word FROM english
+                WHERE id IN (SELECT english_id FROM definitions WHERE chinese_id=?);
+            ''',
+            (chinese[0],))
+        english = [x[0] for x in subcur]
 
         post.append({
-            'c': chinese[0],
-            's': chinese[1],
-            't': chinese[2],
-            'p': chinese[3],
+            'c': chinese[1],
+            's': chinese[2],
+            't': chinese[3],
+            'p': chinese[4],
             'e': english,
         })
 
@@ -95,7 +105,7 @@ def find_simplified(word):
     :rtype: list of dict
     """
     cur = _DB.execute(
-        'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE simplified=?',
+        'SELECT id, classifier, simplified, traditional, pinyin FROM chinese WHERE simplified=?',
         (word,))
 
     return _format_chinese(cur)
@@ -110,7 +120,7 @@ def find_traditional(word):
     :rtype: list of dict
     """
     cur = _DB.execute(
-        'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE traditional=?',
+        'SELECT id, classifier, simplified, traditional, pinyin FROM chinese WHERE traditional=?',
         (word,))
 
     return _format_chinese(cur)
@@ -127,7 +137,7 @@ def find_pinyin(word):
     word = word.lower()
 
     cur = _DB.execute(
-        'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE pinyin=?',
+        'SELECT id, classifier, simplified, traditional, pinyin FROM chinese WHERE pinyin=?',
         (word,))
 
     return _format_chinese(cur)
@@ -143,18 +153,14 @@ def find_english(word):
     """
     word = word.lower()
 
-    cur = _DB.execute(
-        'SELECT x_chinese FROM english WHERE word_lowercase=?',
+    cur = _DB.execute('''
+        SELECT id, classifier, simplified, traditional, pinyin FROM chinese
+            WHERE id IN (SELECT chinese_id FROM definitions
+                WHERE english_id in (SELECT id FROM english WHERE word_lowercase=?
+        ));''',
         (word,))
 
-    post = []
-    for x_chin in cur.fetchall():
-        for chin_id in x_chin[0].split(','):
-            post.extend(_format_chinese(_DB.execute(
-                'SELECT classifier, simplified, traditional, pinyin, x_english FROM chinese WHERE id=?',
-                (chin_id,))))
-
-    return post
+    return _format_chinese(cur)
 
 
 def find_chinese(characters):
