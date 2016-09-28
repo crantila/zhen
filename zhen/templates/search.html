@@ -8,18 +8,13 @@
         <input id="word" type="text" name="word"{% if searched %} value="{{ searched }}"{% endif %}>
     </fieldset>
     <fieldset>
-        {% if chars == 's' %}
-            <legend>简体字还是繁体字？&nbsp;Simplified or Traditional Characters?</legend>
-        {% else %}
-            <legend>簡體字還是繁體字？&nbsp;Simplified or Traditional Characters?</legend>
-        {% endif %}
         <label for="r1">
             <input type="radio" name="chars" id="r1" value="s"{% if chars == 's' %} checked{% endif %}>
-            {% if chars == 's' %}简体{% else %}簡體{% endif %}&nbsp;Simplified
+            <span>{% if chars == 's' %}简体{% else %}簡體{% endif %}&nbsp;Simplified</span>
         </label>
         <label for="r2">
             <input type="radio" name="chars" id="r2" value="t"{% if chars == 't' %} checked{% endif %}>
-            {% if chars == 's' %}繁体{% else %}繁體{% endif %}&nbsp;Traditional
+            <span>{% if chars == 's' %}繁体{% else %}繁體{% endif %}&nbsp;Traditional</span>
         </label>
     </fieldset>
     <button type="submit">搜索 Search</button>

@@ -9,3 +9,50 @@
     tr + tr { border-top: 1px solid #CCC; }
     td:first-child { font-size: 1.2em; }
 }
+body > header {
+    box-shadow: 0 0 .8rem black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+fieldset { border: 1px dotted gray; padding: 1em; }
+button {
+    background: #CCC;
+    border: none;
+    color: #555;
+    padding: .75em 1em;
+}
+button:hover, button:focus { background: rgb(0, 139, 137); color: white; }
+button:active { box-shadow: inset 0 0 1em white; }
+
+/* restyle the radio buttons */
+label + label { margin-left: 1.25em; }
+[type="radio"] {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px; margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+[type="radio"] + span::before {
+    content: '';
+    display: inline-block;
+    width: .75em;
+    height: .75em;
+    vertical-align: -0.25em;
+    border-radius: 1em;
+    border: 0.25em solid #fff;
+    box-shadow: 0 0 0 0.1em #555;
+    margin-right: 0.75em;
+}
+[type="radio"]:checked + span::before {
+    background: #555;
+    box-shadow: 0 0 0 0.1em #555;
+}
+[type="radio"]:focus + span { text-decoration: underline; }
+[type="radio"]:focus + span::before {
+    background: rgb(0, 139, 137);
+}
