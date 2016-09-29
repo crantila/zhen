@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>HTTP 故障 Error {{ error_code }}</h2>
+<p>
+    {% block explanation %}
+        我们不明为什么故障。<br>
+        We don&apos;t know why.
+    {% endblock %}
+</p>
+{% endblock %}

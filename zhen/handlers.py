@@ -26,6 +26,8 @@
 Tornado request handlers.
 """
 
+import re
+
 from jinja2 import Environment, PackageLoader
 from tornado import gen, web
 
@@ -40,6 +42,7 @@ else:
     jinja_optimized = True
 
 
+_COMPILED = re.compile(r'^[ 0-9A-Za-z\u4e00-\u9fbf]+$')
 JINJA = Environment(  # TODO: make it SandboxedEnvironment?
     autoescape=True,  # TODO: change this to the "Autoescape Extension"
     auto_reload=jinja_auto_reload,
@@ -132,10 +135,25 @@ class DefinitionHandler(web.RequestHandler):
     def get(self):
         self.post()
 
+    def write_error(self, *args, **kwargs):
+        """
+        When the user submits a query with characters we're going to consider "invalid," send a
+        report to tell them what's up.
+
+        Otherwise we'll just call the superclass write_error().
+        """
+        if 'invalid_chars' in kwargs:
+            self.write(JINJA.get_template('bad_input.html').render(error_code=self.get_status()))
+        else:
+            self.write(JINJA.get_template('error.html').render(error_code=self.get_status()))
+
     @request_wrapper
     @gen.coroutine
     def post(self):
-        word = self.get_argument('word')  # TODO: filter the word for safety
+        word = self.get_argument('word')
+        if _COMPILED.match(word) is None:
+            # input contained invalid characters
+            return self.send_error(400, invalid_chars=True)
         chars = _verify_chars(self.get_argument('chars', 's'))
         results = lookup.find(word)
         self.write(JINJA.get_template('define.html').render(
@@ -145,16 +163,14 @@ class DefinitionHandler(web.RequestHandler):
         ))
 
 
-class CharactersHandler(web.RequestHandler):
-    @request_wrapper
-    @gen.coroutine
-    def get(self):
-        self.post()
-
+class CharactersHandler(DefinitionHandler):
     @request_wrapper
     @gen.coroutine
     def post(self):
-        word = self.get_argument('word')  # TODO: filter the word for safety
+        word = self.get_argument('word')
+        if _COMPILED.match(word) is None:
+            # input contained invalid characters
+            return self.send_error(400, invalid_chars=True)
         chars = _verify_chars(self.get_argument('chars', 's'))
         results = []
         for each_char in word:
