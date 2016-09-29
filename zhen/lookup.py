@@ -197,20 +197,24 @@ def find(word):
     - English
     - pinyin
     """
-    post = find_simplified(word)
-    if post:
-        return post
+    try:
+        post = find_simplified(word)
+        if post:
+            return post
 
-    post = find_traditional(word)
-    if post:
-        return post
+        post = find_traditional(word)
+        if post:
+            return post
 
-    post = find_english(word)
-    if post:
-        return post
+        post = find_english(word)
+        if post:
+            return post
 
-    post = find_pinyin(word)
-    if post:
-        return post
+        post = find_pinyin(word)
+        if post:
+            return post
+
+    except sqlite3.Error as exc:
+        print('ERROR: in SQLite query ({0}: {1})'.format(type(exc), exc))
 
     return []
