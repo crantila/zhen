@@ -48,10 +48,9 @@ def init_db(database_path):
     # make new database
     conn = sqlite3.Connection(database_path)
     cur = conn.cursor()
-    cur.execute('''CREATE TABLE english (
+    cur.execute('''CREATE VIRTUAL TABLE english USING fts3(
         id INTEGER PRIMARY KEY,
         word TEXT,
-        word_lowercase TEXT
         );''')
     cur.execute('''CREATE TABLE chinese (
         id INTEGER PRIMARY KEY,
@@ -133,8 +132,8 @@ def add_the_english(cur):
         if word == 'highest_id':
             continue
         cur.execute(
-            'INSERT INTO english (id, word, word_lowercase) VALUES (?,?,?)',
-            (val['id'], word, word.lower()))
+            'INSERT INTO english (id, word) VALUES (?,?)',
+            (val['id'], word))
         cur.executemany(
             'INSERT INTO definitions (english_id, chinese_id) VALUES (?,?)',
             [(val['id'], zh_id) for zh_id in val['xref']])
@@ -162,6 +161,8 @@ def main():
                 extractor(i, each.strip(), cur)
 
             add_the_english(cur)
+
+            cur.execute('INSERT INTO english(english) VALUES("optimize");')
 
 
 if __name__ == '__main__':

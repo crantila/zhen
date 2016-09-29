@@ -156,7 +156,7 @@ def find_english(word):
     cur = _DB.execute('''
         SELECT id, classifier, simplified, traditional, pinyin FROM chinese
             WHERE id IN (SELECT chinese_id FROM definitions
-                WHERE english_id in (SELECT id FROM english WHERE word_lowercase=?
+                WHERE english_id in (SELECT id FROM english WHERE word MATCH ?
         ));''',
         (word,))
 
