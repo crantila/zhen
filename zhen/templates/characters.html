@@ -11,11 +11,21 @@
                     <rp>(</rp><rt>{{ result['p'] }}</rt><rp>)</rp>
                 </ruby>
             </td>
-            <td>
-                {% if result['c']|length > 0 %}
-                    <a href="/define?word={{ result['c'] }}&amp;chars={% if chars == 's' %}s{% else %}t{% endif %}">{{ result['c'] }}</a>
-                {% endif %}
-            </td>
+            {% if chars == 's' and result['cs']|length > 0 %}
+                <td lang="zh_CN">
+                    <a href="/characters?word={{ result['cs'] }}&amp;chars=s" title="look up {{ result['cs'] }}">
+                        {{ result['cs'] }}
+                    </a>
+                </td>
+            {% elif result['ct']|length > 0 %}
+                <td lang="zh_TW">
+                    <a href="/characters?word={{ result['ct'] }}&amp;chars=t" title="look up {{ result['ct'] }}">
+                        {{ result['ct'] }}
+                    </a>
+                </td>
+            {% else %}
+                <td></td>
+            {% endif %}
             <td>
                 {{ result['e'] | join(', ') }}
             </td>

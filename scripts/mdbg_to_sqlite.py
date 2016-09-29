@@ -54,9 +54,10 @@ def init_db(database_path):
         );''')
     cur.execute('''CREATE TABLE chinese (
         id INTEGER PRIMARY KEY,
-        classifier TEXT,
-        simplified TEXT,
-        traditional TEXT,
+        cl_s TEXT,
+        cl_t TEXT,
+        simp TEXT,
+        trad TEXT,
         pinyin TEXT
         );''')
     cur.execute('''CREATE TABLE definitions (
@@ -96,7 +97,8 @@ def english_maker(x_chinese, word):
 
 def extractor(i, word, cur):
     post = {
-        'c': '',  # for "classifier," which may not be filled
+        'cl_s': '',  # classifier in Simplified characters; may not be filled
+        'cl_t': '',  # classifier in Traditional characters; may not be filled
         'e': [],  # English translations
         's': None,  # the simplified character
         't': None,  # the traditional character
@@ -115,13 +117,19 @@ def extractor(i, word, cur):
         if definition.startswith('CL:'):
             definition = definition[3:]  # remove the 'CL:' prefix
             definition = definition[:definition.find('[')]  # also remove the pinyin
-            post['c'] = definition
+            if '|' in definition:
+                definition = definition.split('|')
+                post['cl_s'] = definition[1]
+                post['cl_t'] = definition[0]
+            else:
+                post['cl_s'] = definition
+                post['cl_t'] = definition
         else:
             post['e'].append(english_maker(i, definition))
 
     cur.execute(
-        'INSERT INTO chinese (id, classifier, simplified, traditional, pinyin) VALUES (?,?,?,?,?)',
-        (i, post['c'], post['s'], post['t'], post['p']))
+        'INSERT INTO chinese (id, cl_s, cl_t, simp, trad, pinyin) VALUES (?,?,?,?,?,?)',
+        (i, post['cl_s'], post['cl_t'], post['s'], post['t'], post['p']))
 
 
 def add_the_english(cur):

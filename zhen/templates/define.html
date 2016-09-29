@@ -30,11 +30,21 @@
                                 </ruby>
                             </a>
                         </td>
-                        <td {% if chars == 's' %}lang="zh_CN"{% else %}lang="zh_TW"{% endif %}>
-                            {% if result['c']|length > 0 %}
-                                {{ result['c'] }}
-                            {% endif %}
-                        </td>
+                        {% if chars == 's' and result['cs']|length > 0 %}
+                            <td lang="zh_CN">
+                                <a href="/characters?word={{ result['cs'] }}&amp;chars=s" title="look up {{ result['cs'] }}">
+                                    {{ result['cs'] }}
+                                </a>
+                            </td>
+                        {% elif result['ct']|length > 0 %}
+                            <td lang="zh_TW">
+                                <a href="/characters?word={{ result['ct'] }}&amp;chars=t" title="look up {{ result['ct'] }}">
+                                    {{ result['ct'] }}
+                                </a>
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
                         <td>
                             {{ result['e'] | join(', ') }}
                         </td>
