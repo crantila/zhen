@@ -9,10 +9,17 @@ https://zhen-crantila.rhcloud.com/
 What?
 -----
 
-It's a Chinese-English translating dictionary that I'm writing for the
-["10k Apart" competition](https://a-k-apart.com/). I don't expect to win---my visual design skills
-aren't that good---but the goal is to learn how to build a web app without any front-end frameworks
-while also building something that I want to use.
+*Zhen* is a Chinese-English translating dictionary. It's (going to be) a progressive web app that's
+as simple as possible, using no front-end frameworks. I'm writing *Zhen* so that:
+
+- I can use it.
+- I will learn some basic SQL skills.
+- I will learn how to write a web app without frameworks.
+
+I was originally going to enter *Zhen* into the "10k Apart" competition (where the core experience
+needs a page size less than 10KB) but it was taking too long to figure out how to deploy onto
+Microsoft's Azure platform, as required by the contest. And you'll notice that "learn MS Azure" is
+not on my list of reasons to write *Zhen*. So I decided not to bother.
 
 
 Setup for Development
@@ -33,12 +40,6 @@ Deploy to OpenShift
 *Zhen* can run on the [Red Hat OpenShift](https://openshift.redhat.com/) cloud service. When you
 create your gear, give this repository's URL as the starting URL. You should not have to modify
 anything for *Zhen* to work!
-
-
-Deploy to Azure
----------------
-
-I'll have to deploy on Microsoft Azure for the "10k Apart" contest. Instructions to follow...
 
 
 Attribution

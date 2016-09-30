@@ -1,3 +1,4 @@
+- make the <main> margin-top work both with and without the extra.css file
 - search improvements
     - adjust the SQL queries to use JOINs so that you can have only one query
 - deduplicate the "define" and "characters" templates
