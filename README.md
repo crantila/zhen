@@ -3,8 +3,6 @@ Zhen
 
 汉英词典 Chinese-English Dictionary
 
-https://zhen-crantila.rhcloud.com/
-
 
 What?
 -----
@@ -34,12 +32,10 @@ Setup for Development
 And run it with `python -m zhen`.
 
 
-Deploy to OpenShift
--------------------
+Deployment
+----------
 
-*Zhen* can run on the [Red Hat OpenShift](https://openshift.redhat.com/) cloud service. When you
-create your gear, give this repository's URL as the starting URL. You should not have to modify
-anything for *Zhen* to work!
+Unfortunately, *Zhen* no longer works on OpenShift, and is not deployed anywhere.
 
 
 Attribution
